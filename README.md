@@ -140,5 +140,5 @@ Decisiones que vale la pena conocer:
 
 ## Aviso
 
-Repositorio **privado**. La demo usa exclusivamente datos sintéticos: los volcados crudos y los
-materiales de análisis del sistema original quedan fuera de git a propósito.
+Demo con **datos sintéticos**: mismo esquema y mismos volúmenes que el sistema original, cero datos
+de clientes. Los volcados crudos y los materiales de análisis quedan fuera de git a propósito.

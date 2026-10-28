@@ -9,6 +9,7 @@
  * claro + panel oscuro, acento indigo, números en tipografía tabular.
  */
 import pptxgen from 'pptxgenjs';
+import JSZip from 'jszip';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -428,4 +429,15 @@ const captura = (s, archivo, x, y, w) => {
 }
 
 await pres.writeFile({ fileName: OUT });
+
+// pptxgenjs deja la ruta absoluta de cada captura en el atributo descr de la imagen.
+// Se reemplaza por el nombre del archivo: el deck no debe revelar rutas locales.
+const zip = await JSZip.loadAsync(fs.readFileSync(OUT));
+for (const nombre of Object.keys(zip.files)) {
+  if (!/^ppt\/slides\/slide\d+\.xml$/.test(nombre)) continue;
+  const xml = await zip.file(nombre).async('string');
+  zip.file(nombre, xml.replace(/descr="[^"]*[\\/]([^\\/"]+)"/g, 'descr="$1"'));
+}
+fs.writeFileSync(OUT, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
+
 console.log('OK ->', OUT);
