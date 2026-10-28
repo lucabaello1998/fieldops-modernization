@@ -1,0 +1,55 @@
+# dependencias
+/vendor/
+/node_modules
+
+# entorno y secretos
+.env
+.env.backup
+.env.production
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+db.local.php
+/auth.json
+Homestead.json
+Homestead.yaml
+
+# dumps y datos (nunca versionar datos productivos ni credenciales)
+*.sql.gz
+*.dump
+docker/init/*.sql
+dumps/
+usuarios.txt
+
+# build de assets
+/public/build
+/public/hot
+/public/storage
+
+# logs y temporales
+*.log
+error_log
+.phpunit.result.cache
+.phpactor.json
+!docs/**
+
+# capturas de QA (se regeneran con tools/capturar-todo.mjs)
+/docs/capturas/qa/
+
+# cache / framework
+/storage/*.key
+/storage/pail
+/bootstrap/cache/*.php
+
+# editores y sistema
+.DS_Store
+Thumbs.db
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
