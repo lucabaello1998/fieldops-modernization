@@ -11,16 +11,19 @@ use Illuminate\Database\Eloquent\Model;
 class AsignacionMaterial extends Model
 {
     protected $table = 'asignacion_material';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'fecha' => 'date',
-            'sap' => 'integer',
-            'cantidad' => 'integer',
-            'ot' => 'integer',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'fecha' => 'date',
+        'sap' => 'integer',
+        'cantidad' => 'integer',
+        'ot' => 'integer',
     ];
 }

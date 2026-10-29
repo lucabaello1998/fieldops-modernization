@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Reportevl extends Model
 {
     protected $table = 'reportevl';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
-            'cant_drop' => 'integer',
+        'id' => 'integer',
+        'fecha' => 'date',
+        'cant_drop' => 'integer',
     ];
 }

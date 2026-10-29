@@ -101,7 +101,7 @@ class AltaController extends Controller
 
         return Alta::query()
             ->when($busqueda !== '', function (Builder $query) use ($busqueda) {
-                $termino = '%' . $busqueda . '%';
+                $termino = '%'.$busqueda.'%';
 
                 $query->where(function (Builder $sub) use ($termino) {
                     $sub->where('cliente', 'like', $termino)

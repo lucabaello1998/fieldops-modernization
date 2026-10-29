@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Atcreporteslineal extends Model
 {
     protected $table = 'atcreporteslineal';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
-            'num_empleado' => 'integer',
+        'id' => 'integer',
+        'fecha' => 'date',
+        'num_empleado' => 'integer',
     ];
 }

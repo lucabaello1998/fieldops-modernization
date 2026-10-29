@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class Atckilometro extends Model
 {
     protected $table = 'atckilometros';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'reportes' => 'integer',
+        'id' => 'integer',
+        'reportes' => 'integer',
     ];
 }

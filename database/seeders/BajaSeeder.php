@@ -25,7 +25,7 @@ class BajaSeeder extends Seeder
                 'tecnico' => $tecnico,
                 'ot' => random_int(100000, 999999),
                 'id_actividad' => (string) random_int(1000000, 9999999),
-                'nim' => 'NIM' . strtoupper(bin2hex(random_bytes(3))),
+                'nim' => 'NIM'.strtoupper(bin2hex(random_bytes(3))),
                 'tkl' => strtoupper(bin2hex(random_bytes(5))),
                 'motivo' => DemoCatalog::rand(DemoCatalog::MOTIVOS_BAJA),
                 'obs_tecnico' => DemoCatalog::rand([
@@ -35,11 +35,11 @@ class BajaSeeder extends Seeder
                     'Solo se retiro el decodificador.',
                 ]),
                 'obs' => DemoCatalog::rand(['OK', 'Pendiente de cierre administrativo', 'Equipo con daño cosmetico']),
-                'direccion' => DemoCatalog::rand(['Av. Rivadavia', 'Calle Mitre', 'Av. San Martin', 'Calle Belgrano']) . ' ' . random_int(100, 4500),
+                'direccion' => DemoCatalog::rand(['Av. Rivadavia', 'Calle Mitre', 'Av. San Martin', 'Calle Belgrano']).' '.random_int(100, 4500),
                 'localidad' => DemoCatalog::rand(DemoCatalog::LOCALIDADES),
                 'zona_tarea' => DemoCatalog::rand(DemoCatalog::ZONAS),
                 'cliente' => DemoCatalog::rand(['Maria Gonzalez', 'Carlos Dominguez', 'Lucia Fernandez', 'Jorge Benitez', 'Silvia Rios']),
-                'telefono' => '11' . random_int(40000000, 79999999),
+                'telefono' => '11'.random_int(40000000, 79999999),
                 'zona' => DemoCatalog::rand(DemoCatalog::ZONAS),
                 'calendario' => $fecha->toDateString(),
             ];

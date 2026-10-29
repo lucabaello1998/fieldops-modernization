@@ -19,7 +19,7 @@ class VehiculoSeeder extends Seeder
             $seguro = DemoCatalog::fechaEntre('-6 months', '+20 months');
 
             $filas[] = [
-                'patente' => strtoupper(DemoCatalog::rand(['AB', 'AC', 'AD', 'AE', 'AF', 'AG'])) . random_int(100, 999) . strtoupper(DemoCatalog::rand(['CD', 'EF', 'GH', 'IJ'])),
+                'patente' => strtoupper(DemoCatalog::rand(['AB', 'AC', 'AD', 'AE', 'AF', 'AG'])).random_int(100, 999).strtoupper(DemoCatalog::rand(['CD', 'EF', 'GH', 'IJ'])),
                 'auto' => DemoCatalog::rand($marcas),
                 'color' => DemoCatalog::rand($colores),
                 'vigente' => $vtv->isFuture() ? 'Si' : 'No',

@@ -59,11 +59,11 @@ class TareaSeeder extends Seeder
                 'token' => bin2hex(random_bytes(6)),
                 'quien' => 'despacho',
                 'cuando' => $creado,
-                'titulo' => $tipo . ' - OT ' . $ot,
+                'titulo' => $tipo.' - OT '.$ot,
                 'prioridad' => $prioridad,
                 'tarea' => $tipo,
                 'abreviado' => mb_substr($tipo, 0, 3),
-                'sub_tarea' => $subtareas ? 'Verificar instalacion #' . random_int(10, 99) : '',
+                'sub_tarea' => $subtareas ? 'Verificar instalacion #'.random_int(10, 99) : '',
                 'sub_estado' => $subtareas ? DemoCatalog::rand(['Pendiente', 'Pendiente', 'Completada']) : '',
                 'descripcion' => sprintf(
                     '%s en %s. Cliente: %s. OT %d. Coordinar con el cliente antes de salir. Zona: %s.',

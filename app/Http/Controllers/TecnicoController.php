@@ -27,10 +27,10 @@ class TecnicoController extends Controller
         $handles = $tecnicos->pluck('tecnico')->filter()->values()->all();
 
         $desempeno = Produccion::query()
-            ->selectRaw("tecnico,
+            ->selectRaw('tecnico,
                 SUM(COALESCE(dosplay, 0) + COALESCE(tresplay, 0)) as instalaciones,
                 SUM(COALESCE(mtto_int, 0) + COALESCE(mtto_ext, 0)) as mantenimiento,
-                SUM(COALESCE(bajas, 0)) as bajas")
+                SUM(COALESCE(bajas, 0)) as bajas')
             ->whereIn('tecnico', $handles)
             ->where('fecha', '>=', now()->subDays(30))
             ->groupBy('tecnico')
@@ -102,7 +102,7 @@ class TecnicoController extends Controller
 
         return Tecnico::query()
             ->when($busqueda !== '', function (Builder $query) use ($busqueda) {
-                $termino = '%' . $busqueda . '%';
+                $termino = '%'.$busqueda.'%';
 
                 $query->where(function (Builder $sub) use ($termino) {
                     $sub->where('nombre', 'like', $termino)

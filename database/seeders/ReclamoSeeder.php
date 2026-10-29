@@ -20,11 +20,11 @@ class ReclamoSeeder extends Seeder
 
             $filas[] = [
                 'tecnico' => DemoCatalog::rand($tecnicos),
-                'rf' => 'RF' . random_int(10000, 99999),
+                'rf' => 'RF'.random_int(10000, 99999),
                 'ot' => random_int(100000, 999999),
                 'fechains' => $fecha->toDateString(),
                 'fechamail' => $fecha->copy()->addDays(random_int(0, 3))->toDateString(),
-                'direccion' => DemoCatalog::rand(['Av. Rivadavia', 'Calle Mitre', 'Av. San Martin', 'Calle Belgrano']) . ' ' . random_int(100, 4500),
+                'direccion' => DemoCatalog::rand(['Av. Rivadavia', 'Calle Mitre', 'Av. San Martin', 'Calle Belgrano']).' '.random_int(100, 4500),
                 'telefono' => random_int(1140000000, 1179999999),
                 'problema' => DemoCatalog::rand([
                     'Intermitencia en el servicio de internet',

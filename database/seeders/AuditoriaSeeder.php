@@ -32,7 +32,7 @@ class AuditoriaSeeder extends Seeder
             $fecha = DemoCatalog::fechaEntre('-14 months', 'now');
             $tecnico = DemoCatalog::rand($tecnicos);
             $fila = [
-                'identificador' => 'AUD-' . str_pad((string) ($n + 1), 5, '0', STR_PAD_LEFT),
+                'identificador' => 'AUD-'.str_pad((string) ($n + 1), 5, '0', STR_PAD_LEFT),
                 'supervisor' => DemoCatalog::rand(['Marta Sosa', 'Emiliano Paz', 'Nestor Villalba', 'Roberto Gimenez']),
                 'fecha_relevo' => $fecha->copy()->addHours(random_int(9, 17)),
                 'tecnico' => $tecnico,

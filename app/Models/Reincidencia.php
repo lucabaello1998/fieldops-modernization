@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 class Reincidencia extends Model
 {
     protected $table = 'reincidencias';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'ot' => 'integer',
-            'fechaint' => 'date',
-            'fecharep' => 'date',
-            'otdos' => 'integer',
+        'id' => 'integer',
+        'ot' => 'integer',
+        'fechaint' => 'date',
+        'fecharep' => 'date',
+        'otdos' => 'integer',
     ];
 }

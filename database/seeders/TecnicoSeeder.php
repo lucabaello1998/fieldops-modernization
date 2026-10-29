@@ -46,11 +46,11 @@ class TecnicoSeeder extends Seeder
             [$nombre, $apellido] = $combos[$i - 1];
 
             // El handle tiene que ser unico: en el legacy es la clave de relacion por texto.
-            $base = mb_strtolower(mb_substr($nombre, 0, 1) . $apellido);
+            $base = mb_strtolower(mb_substr($nombre, 0, 1).$apellido);
             $usuario = $base;
             $sufijo = 2;
             while (isset($usados[$usuario])) {
-                $usuario = $base . $sufijo++;
+                $usuario = $base.$sufijo++;
             }
             $usados[$usuario] = true;
 
@@ -71,9 +71,9 @@ class TecnicoSeeder extends Seeder
                 'modelo' => DemoCatalog::rand(self::MARCAS),
                 'sn' => strtoupper(bin2hex(random_bytes(4))),
                 'flota' => (string) random_int(100, 999),
-                'tel' => '11' . random_int(40000000, 79999999),
-                'mail' => $usuario . '@fieldops.test',
-                'patente' => strtoupper(DemoCatalog::rand(['AB', 'AC', 'AD', 'AE', 'AF'])) . random_int(100, 999) . strtoupper(DemoCatalog::rand(['CD', 'EF', 'GH'])),
+                'tel' => '11'.random_int(40000000, 79999999),
+                'mail' => $usuario.'@fieldops.test',
+                'patente' => strtoupper(DemoCatalog::rand(['AB', 'AC', 'AD', 'AE', 'AF'])).random_int(100, 999).strtoupper(DemoCatalog::rand(['CD', 'EF', 'GH'])),
                 'tusu' => 'fiberhome',
                 'tcon' => (string) random_int(100000, 999999),
                 'sgtusu' => 'hw',

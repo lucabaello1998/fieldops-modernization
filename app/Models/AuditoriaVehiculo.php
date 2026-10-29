@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class AuditoriaVehiculo extends Model
 {
     protected $table = 'auditoria_vehiculo';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha_relevo' => 'datetime',
-            'fecha' => 'date',
+        'id' => 'integer',
+        'fecha_relevo' => 'datetime',
+        'fecha' => 'date',
     ];
 }

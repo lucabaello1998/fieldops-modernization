@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class Basematerial extends Model
 {
     protected $table = 'basemateriales';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'sap' => 'integer',
+        'id' => 'integer',
+        'sap' => 'integer',
     ];
 }

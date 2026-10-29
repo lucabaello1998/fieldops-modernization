@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $table = 'usuarios';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'ingreso' => 'date',
+        'id' => 'integer',
+        'ingreso' => 'date',
     ];
 }

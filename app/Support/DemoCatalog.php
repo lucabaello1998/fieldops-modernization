@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
+
 /**
  * Catalogos de datos SINTETICOS para la demo.
  *
@@ -97,7 +99,7 @@ class DemoCatalog
     /** Fecha aleatoria entre $desde y $hasta (Carbon). */
     public static function fechaEntre(string $desde, string $hasta)
     {
-        return \Illuminate\Support\Carbon::createFromTimestamp(
+        return Carbon::createFromTimestamp(
             random_int(strtotime($desde), strtotime($hasta))
         );
     }

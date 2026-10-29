@@ -70,7 +70,7 @@ class BusquedaTest extends TestCase
     {
         $this->datos();
 
-        $r = $this->actingAs($this->admin())->get('/buscar?q=' . urlencode("zzz' OR 1=1 -- -"));
+        $r = $this->actingAs($this->admin())->get('/buscar?q='.urlencode("zzz' OR 1=1 -- -"));
 
         $r->assertOk();
         // Si la inyeccion funcionara, veriamos todos los registros de la base.
@@ -83,13 +83,13 @@ class BusquedaTest extends TestCase
         $this->datos();
 
         // Sin escapar, '%%' seria LIKE '%%%' y devolveria todo.
-        $this->actingAs($this->admin())->get('/buscar?q=' . urlencode('%%'))
+        $this->actingAs($this->admin())->get('/buscar?q='.urlencode('%%'))
             ->assertOk()
             ->assertDontSee('Instalacion Rivadavia')
             ->assertDontSee('Roseta optica');
 
         // '_' tampoco debe funcionar como comodin de un caracter.
-        $this->actingAs($this->admin())->get('/buscar?q=' . urlencode('Roseta_'))
+        $this->actingAs($this->admin())->get('/buscar?q='.urlencode('Roseta_'))
             ->assertOk()
             ->assertDontSee('Roseta optica');
     }

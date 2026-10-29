@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 class Tarea extends Model
 {
     protected $table = 'tareas';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'prioridad' => 'integer',
-            'inicio' => 'date',
-            'fin' => 'date',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'prioridad' => 'integer',
+        'inicio' => 'date',
+        'fin' => 'date',
     ];
 }

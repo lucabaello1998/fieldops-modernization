@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Asistenciaatc extends Model
 {
     protected $table = 'asistenciaatc';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
-            'hora' => 'string',
+        'id' => 'integer',
+        'fecha' => 'date',
+        'hora' => 'string',
     ];
 }

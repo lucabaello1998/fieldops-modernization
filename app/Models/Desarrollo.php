@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class Desarrollo extends Model
 {
     protected $table = 'desarrollo';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'fecha' => 'date',
-            'fase' => 'integer',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'fecha' => 'date',
+        'fase' => 'integer',
     ];
 }

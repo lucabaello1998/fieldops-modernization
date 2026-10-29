@@ -115,7 +115,7 @@ class UsuarioController extends Controller
         $nombre = $usuario->name;
         $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('ok', 'Usuario ' . $nombre . ' eliminado.');
+        return redirect()->route('usuarios.index')->with('ok', 'Usuario '.$nombre.' eliminado.');
     }
 
     /** Mensajes de validacion que explican el motivo del rechazo. */
@@ -141,6 +141,6 @@ class UsuarioController extends Controller
     {
         $partes = preg_split('/\s+/', trim($nombre));
 
-        return mb_strtoupper(mb_substr($partes[0] ?? '', 0, 1) . mb_substr($partes[1] ?? '', 0, 1));
+        return mb_strtoupper(mb_substr($partes[0] ?? '', 0, 1).mb_substr($partes[1] ?? '', 0, 1));
     }
 }

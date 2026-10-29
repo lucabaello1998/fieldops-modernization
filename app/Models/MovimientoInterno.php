@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class MovimientoInterno extends Model
 {
     protected $table = 'movimiento_interno';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'inicio' => 'date',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'inicio' => 'date',
     ];
 }

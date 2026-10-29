@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class Tecnico extends Model
 {
     protected $table = 'tecnicos';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'dni' => 'integer',
-            'id_recurso' => 'integer',
-            'ingreso' => 'date',
+        'id' => 'integer',
+        'dni' => 'integer',
+        'id_recurso' => 'integer',
+        'ingreso' => 'date',
     ];
 }

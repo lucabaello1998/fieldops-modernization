@@ -11,12 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class NumeroSap extends Model
 {
     protected $table = 'numeroSap';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = null;
+
     public $incrementing = false;
 
     protected $casts = [
-            'Material Sinergia' => 'integer',
+        'Material Sinergia' => 'integer',
     ];
 }

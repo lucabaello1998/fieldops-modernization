@@ -11,12 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class FinalRegistro extends Model
 {
     protected $table = 'final';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = null;
+
     public $incrementing = false;
 
     protected $casts = [
-            'UB DESTINO' => 'integer',
+        'UB DESTINO' => 'integer',
     ];
 }

@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Atcmapa extends Model
 {
     protected $table = 'atcmapas';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
-            'orden' => 'integer',
+        'id' => 'integer',
+        'fecha' => 'date',
+        'orden' => 'integer',
     ];
 }

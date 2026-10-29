@@ -11,11 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class IndumentariaUser extends Model
 {
     protected $table = 'indumentaria_user';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
+        'id' => 'integer',
     ];
 }

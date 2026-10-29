@@ -46,7 +46,7 @@ class User extends Authenticatable
     {
         $partes = preg_split('/\s+/', trim((string) $this->name));
 
-        return mb_strtoupper(mb_substr($partes[0] ?? '', 0, 1) . mb_substr($partes[1] ?? '', 0, 1));
+        return mb_strtoupper(mb_substr($partes[0] ?? '', 0, 1).mb_substr($partes[1] ?? '', 0, 1));
     }
 
     public function scopeActivos($query)

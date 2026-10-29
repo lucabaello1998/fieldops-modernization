@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class Atcreportesgpon extends Model
 {
     protected $table = 'atcreportesgpon';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
+        'id' => 'integer',
+        'fecha' => 'date',
     ];
 }

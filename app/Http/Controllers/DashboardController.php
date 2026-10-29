@@ -77,10 +77,10 @@ class DashboardController extends Controller
             'tareasPorEstado' => Tarea::selectRaw('estado, COUNT(*) as t')->groupBy('estado')->pluck('t', 'estado'),
             'stockPorDeposito' => Material::selectRaw('centro, SUM(cantidad) as t')->groupBy('centro')->orderByDesc('t')->pluck('t', 'centro'),
             'topTecnicos' => Produccion::query()
-                ->selectRaw("tecnico,
+                ->selectRaw('tecnico,
                     SUM(COALESCE(dosplay,0) + COALESCE(tresplay,0)) as instalaciones,
                     SUM(COALESCE(mtto_int,0) + COALESCE(mtto_ext,0)) as mtto,
-                    SUM(COALESCE(bajas,0)) as bajas")
+                    SUM(COALESCE(bajas,0)) as bajas')
                 ->where('fecha', '>=', now()->subDays(30))
                 ->groupBy('tecnico')->orderByDesc('instalaciones')->limit(6)->get(),
             'ultimasAltas' => Alta::orderByDesc('cuando')->limit(7)->get(),

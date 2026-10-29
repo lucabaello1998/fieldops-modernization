@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Precontacto extends Model
 {
     protected $table = 'precontacto';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'orden' => 'integer',
-            'cuando' => 'datetime',
+        'id' => 'integer',
+        'orden' => 'integer',
+        'cuando' => 'datetime',
     ];
 }

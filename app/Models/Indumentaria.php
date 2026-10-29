@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 class Indumentaria extends Model
 {
     protected $table = 'indumentaria';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cantidad' => 'integer',
-            'fecha' => 'date',
-            'fechaegre' => 'date',
-            'cantec' => 'integer',
+        'id' => 'integer',
+        'cantidad' => 'integer',
+        'fecha' => 'date',
+        'fechaegre' => 'date',
+        'cantec' => 'integer',
     ];
 }

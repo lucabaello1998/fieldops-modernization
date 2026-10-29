@@ -11,17 +11,20 @@ use Illuminate\Database\Eloquent\Model;
 class Reclamo extends Model
 {
     protected $table = 'reclamos';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'ot' => 'integer',
-            'fechains' => 'date',
-            'fechamail' => 'date',
-            'telefono' => 'integer',
-            'fechasolu' => 'date',
-            'gasto' => 'integer',
+        'id' => 'integer',
+        'ot' => 'integer',
+        'fechains' => 'date',
+        'fechamail' => 'date',
+        'telefono' => 'integer',
+        'fechasolu' => 'date',
+        'gasto' => 'integer',
     ];
 }

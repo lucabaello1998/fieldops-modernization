@@ -11,16 +11,20 @@ use Illuminate\Database\Eloquent\Model;
 class DevoIptvEqSIdentif extends Model
 {
     protected $table = 'devo_iptv_eq_s_identif';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = null;
+
     public $incrementing = false;
 
     protected $casts = [
-            'id' => 'integer',
-            'N° REMITO' => 'integer',
-            'MATERIAL SAP' => 'integer',
-            'CANTIDAD' => 'integer',
-            'Nº CAJA' => 'integer',
+        'id' => 'integer',
+        'N° REMITO' => 'integer',
+        'MATERIAL SAP' => 'integer',
+        'CANTIDAD' => 'integer',
+        'Nº CAJA' => 'integer',
     ];
 }

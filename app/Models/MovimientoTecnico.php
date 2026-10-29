@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class MovimientoTecnico extends Model
 {
     protected $table = 'movimiento_tecnico';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
+        'id' => 'integer',
+        'cuando' => 'datetime',
     ];
 }

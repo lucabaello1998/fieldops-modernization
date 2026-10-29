@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class NoConformidad extends Model
 {
     protected $table = 'no_conformidades';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'fecha' => 'date',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'fecha' => 'date',
     ];
 }

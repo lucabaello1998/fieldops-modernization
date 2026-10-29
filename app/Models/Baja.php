@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class Baja extends Model
 {
     protected $table = 'bajas';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'ot' => 'integer',
-            'calendario' => 'date',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'ot' => 'integer',
+        'calendario' => 'date',
     ];
 }

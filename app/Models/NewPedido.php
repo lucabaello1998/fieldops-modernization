@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 class NewPedido extends Model
 {
     protected $table = 'new_pedidos';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha_usuario' => 'datetime',
-            'fecha' => 'date',
-            'sap' => 'integer',
-            'descargado_cuando' => 'date',
+        'id' => 'integer',
+        'fecha_usuario' => 'datetime',
+        'fecha' => 'date',
+        'sap' => 'integer',
+        'descargado_cuando' => 'date',
     ];
 }

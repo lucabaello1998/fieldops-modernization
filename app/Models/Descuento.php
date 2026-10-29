@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class Descuento extends Model
 {
     protected $table = 'descuentos';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha' => 'date',
-            'ot' => 'integer',
-            'monto' => 'integer',
+        'id' => 'integer',
+        'fecha' => 'date',
+        'ot' => 'integer',
+        'monto' => 'integer',
     ];
 }

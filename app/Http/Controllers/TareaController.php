@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tarea;
 use App\Models\Tecnico;
+use App\Support\DemoCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
@@ -55,7 +56,7 @@ class TareaController extends Controller
         return view('tareas.index', [
             'columnas' => $columnas,
             'tecnicos' => Tecnico::where('activo', 'Si')->orderBy('apellido')->pluck('tecnico'),
-            'tipos' => \App\Support\DemoCatalog::TIPOS_TAREA,
+            'tipos' => DemoCatalog::TIPOS_TAREA,
             'filtros' => $request->only(['q', 'tecnico', 'prioridad']),
             'kpis' => [
                 'total' => $tareas->count(),
@@ -105,7 +106,7 @@ class TareaController extends Controller
             'nom_archivo_uno' => '', 'nom_archivo_dos' => '', 'nom_archivo_tres' => '',
         ]);
 
-        return back()->with('ok', 'Tarea creada y asignada a ' . $datos['a_quien'] . '.');
+        return back()->with('ok', 'Tarea creada y asignada a '.$datos['a_quien'].'.');
     }
 
     public function show(Tarea $tarea)
@@ -153,7 +154,7 @@ class TareaController extends Controller
         // Trazabilidad: queda registrado quien movio la tarea y cuando.
         $autor = $request->user()->abreviatura ?: $request->user()->email;
         $sello = sprintf('[%s] %s movio la tarea de "%s" a "%s".', now()->format('d/m/Y H:i'), $autor, $anterior, $datos['estado']);
-        $tarea->mensaje = trim(($tarea->mensaje ? $tarea->mensaje . "\n" : '') . $sello);
+        $tarea->mensaje = trim(($tarea->mensaje ? $tarea->mensaje."\n" : '').$sello);
         $tarea->save();
 
         return response()->json([
@@ -171,10 +172,10 @@ class TareaController extends Controller
 
         $autor = $request->user()->abreviatura ?: $request->user()->email;
         $nota = sprintf('[%s] %s: %s', now()->format('d/m/Y H:i'), $autor, $datos['mensaje']);
-        $tarea->mensaje = trim(($tarea->mensaje ? $tarea->mensaje . "\n" : '') . $nota);
+        $tarea->mensaje = trim(($tarea->mensaje ? $tarea->mensaje."\n" : '').$nota);
         $tarea->save();
 
-        return back()->with('ok', 'Nota agregada a la tarea #' . $tarea->id . '.');
+        return back()->with('ok', 'Nota agregada a la tarea #'.$tarea->id.'.');
     }
 
     public function destroy(Request $request, Tarea $tarea)
@@ -185,6 +186,6 @@ class TareaController extends Controller
         $id = $tarea->id;
         $tarea->delete();
 
-        return back()->with('ok', 'Tarea #' . $id . ' eliminada.');
+        return back()->with('ok', 'Tarea #'.$id.' eliminada.');
     }
 }

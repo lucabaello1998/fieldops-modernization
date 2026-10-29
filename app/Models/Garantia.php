@@ -11,15 +11,18 @@ use Illuminate\Database\Eloquent\Model;
 class Garantia extends Model
 {
     protected $table = 'garantias';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'ot' => 'integer',
-            'fechaint' => 'date',
-            'fecharep' => 'date',
-            'cuando' => 'datetime',
+        'id' => 'integer',
+        'ot' => 'integer',
+        'fechaint' => 'date',
+        'fecharep' => 'date',
+        'cuando' => 'datetime',
     ];
 }

@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class MensajesTec extends Model
 {
     protected $table = 'mensajes_tec';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
+        'id' => 'integer',
+        'cuando' => 'datetime',
     ];
 }

@@ -11,35 +11,38 @@ use Illuminate\Database\Eloquent\Model;
 class Precio extends Model
 {
     protected $table = 'precios';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'dosplay' => 'integer',
-            'tresplay' => 'integer',
-            'stb' => 'integer',
-            'mudainter' => 'integer',
-            'bajas' => 'integer',
-            'garanjus' => 'integer',
-            'garaninterv' => 'integer',
-            'garancomp' => 'integer',
-            'sab' => 'integer',
-            'fer' => 'integer',
-            'sabmtto' => 'integer',
-            'fermtto' => 'integer',
-            'bajatec' => 'integer',
-            'bajadesmont' => 'integer',
-            'mttointer' => 'integer',
-            'mttoexter' => 'integer',
-            'desplani' => 'integer',
-            'desepp' => 'integer',
-            'desinst' => 'integer',
-            'descalidad' => 'integer',
-            'destoa' => 'integer',
-            'destotal' => 'integer',
-            'desbaja' => 'integer',
-            'mttoreacond' => 'integer',
+        'id' => 'integer',
+        'dosplay' => 'integer',
+        'tresplay' => 'integer',
+        'stb' => 'integer',
+        'mudainter' => 'integer',
+        'bajas' => 'integer',
+        'garanjus' => 'integer',
+        'garaninterv' => 'integer',
+        'garancomp' => 'integer',
+        'sab' => 'integer',
+        'fer' => 'integer',
+        'sabmtto' => 'integer',
+        'fermtto' => 'integer',
+        'bajatec' => 'integer',
+        'bajadesmont' => 'integer',
+        'mttointer' => 'integer',
+        'mttoexter' => 'integer',
+        'desplani' => 'integer',
+        'desepp' => 'integer',
+        'desinst' => 'integer',
+        'descalidad' => 'integer',
+        'destoa' => 'integer',
+        'destotal' => 'integer',
+        'desbaja' => 'integer',
+        'mttoreacond' => 'integer',
     ];
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tecnico;
 use App\Models\NoConformidad;
+use App\Models\Tecnico;
 use App\Support\DemoCatalog;
 use Illuminate\Database\Seeder;
 
@@ -29,7 +29,7 @@ class NoConformidadSeeder extends Seeder
                     'Se retiro equipo sin registrar en el sistema.',
                     'Falta de EPP en tarea en altura.',
                 ]),
-                'id_nc' => 'NC-' . str_pad((string) ($n + 1), 5, '0', STR_PAD_LEFT),
+                'id_nc' => 'NC-'.str_pad((string) ($n + 1), 5, '0', STR_PAD_LEFT),
                 'imagenpri' => '', 'imagenseg' => '', 'imagenter' => '',
             ];
         }

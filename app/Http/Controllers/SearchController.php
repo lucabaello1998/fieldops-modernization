@@ -121,6 +121,6 @@ class SearchController extends Controller
      */
     private function patron(string $q): string
     {
-        return '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $q) . '%';
+        return '%'.str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $q).'%';
     }
 }

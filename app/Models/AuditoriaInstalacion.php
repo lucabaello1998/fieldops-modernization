@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class AuditoriaInstalacion extends Model
 {
     protected $table = 'auditoria_instalaciones';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'fecha_relevo' => 'datetime',
-            'fecha' => 'date',
-            'ot' => 'integer',
+        'id' => 'integer',
+        'fecha_relevo' => 'datetime',
+        'fecha' => 'date',
+        'ot' => 'integer',
     ];
 }

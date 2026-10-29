@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                     'role' => $rol,
                     'activo' => true,
                     'zona' => $zona,
-                    'abreviatura' => mb_strtoupper(mb_substr($nombre, 0, 1) . mb_substr(explode(' ', $nombre)[1] ?? '', 0, 1)),
+                    'abreviatura' => mb_strtoupper(mb_substr($nombre, 0, 1).mb_substr(explode(' ', $nombre)[1] ?? '', 0, 1)),
                     'ultimo_acceso' => now()->subHours(random_int(1, 900)),
                     'email_verified_at' => now(),
                 ]

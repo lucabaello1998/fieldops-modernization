@@ -11,14 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class CorpoTarea extends Model
 {
     protected $table = 'corpo_tareas';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'F_Asignado' => 'date',
-            'orden' => 'integer',
-            'enlace' => 'integer',
+        'id' => 'integer',
+        'F_Asignado' => 'date',
+        'orden' => 'integer',
+        'enlace' => 'integer',
     ];
 }

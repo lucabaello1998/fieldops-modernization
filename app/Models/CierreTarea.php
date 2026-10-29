@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class CierreTarea extends Model
 {
     protected $table = 'cierre_tarea';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'cuando' => 'datetime',
-            'fecha' => 'date',
+        'id' => 'integer',
+        'cuando' => 'datetime',
+        'fecha' => 'date',
     ];
 }

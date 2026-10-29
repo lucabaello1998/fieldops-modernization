@@ -32,19 +32,19 @@ class UsuarioLegacySeeder extends Seeder
 
         $filas = [];
         foreach ($usuarios as $i => [$apellido, $nombre, $tipo]) {
-            $usuario = mb_strtolower(mb_substr($nombre, 0, 1) . $apellido);
+            $usuario = mb_strtolower(mb_substr($nombre, 0, 1).$apellido);
             $filas[] = [
                 'token' => bin2hex(random_bytes(8)),
                 'ingreso' => now()->subDays(random_int(60, 1200))->toDateString(),
                 'activo' => 'Si',
                 'nombre' => $nombre,
                 'apellido' => $apellido,
-                'mail' => $usuario . '@legacy.local',
+                'mail' => $usuario.'@legacy.local',
                 'usuario' => $usuario,
                 'pass' => $nombre,          // columna del esquema original, sin hash
                 'tipo_us' => $tipo,
                 'zona' => 'CABA Norte',
-                'abreviatura' => mb_strtoupper(mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1)),
+                'abreviatura' => mb_strtoupper(mb_substr($nombre, 0, 1).mb_substr($apellido, 0, 1)),
                 'icono' => 'user',
                 'tema' => 'claro',
                 'fuente' => 'Inter',

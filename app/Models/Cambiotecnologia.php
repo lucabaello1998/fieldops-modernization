@@ -11,13 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Cambiotecnologia extends Model
 {
     protected $table = 'cambiotecnologia';
+
     public $timestamps = false;
+
     protected $guarded = [];
+
     protected $primaryKey = 'id';
 
     protected $casts = [
-            'id' => 'integer',
-            'ot' => 'integer',
-            'calendario' => 'date',
+        'id' => 'integer',
+        'ot' => 'integer',
+        'calendario' => 'date',
     ];
 }

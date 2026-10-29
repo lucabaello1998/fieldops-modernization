@@ -37,7 +37,7 @@ class TareasTest extends TestCase
     private function tarea(array $extra = []): Tarea
     {
         return Tarea::create(array_merge([
-            'token' => 'tok' . random_int(1000, 9999),
+            'token' => 'tok'.random_int(1000, 9999),
             'quien' => 'LB',
             'cuando' => now(),
             'titulo' => 'Tarea de prueba',
@@ -74,8 +74,8 @@ class TareasTest extends TestCase
 
         // Si alguna de estas columnas NOT NULL faltara, MySQL devuelve error 500.
         foreach (['archivo_uno', 'archivo_dos', 'archivo_tres',
-                  'nom_archivo_uno', 'nom_archivo_dos', 'nom_archivo_tres',
-                  'sub_tarea', 'sub_estado', 'mensaje'] as $col) {
+            'nom_archivo_uno', 'nom_archivo_dos', 'nom_archivo_tres',
+            'sub_tarea', 'sub_estado', 'mensaje'] as $col) {
             $this->assertSame('', $tarea->{$col}, "La columna {$col} quedo NULL");
         }
 

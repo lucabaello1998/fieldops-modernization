@@ -49,7 +49,7 @@ class StockController extends Controller
 
         // ------------------------------------------------ consulta filtrada
         $filas = Material::query()
-            ->when($q !== '', fn ($c) => $c->where('material', 'like', '%' . $q . '%'))
+            ->when($q !== '', fn ($c) => $c->where('material', 'like', '%'.$q.'%'))
             ->when(in_array($centro, self::DEPOSITOS, true), fn ($c) => $c->where('centro', $centro))
             ->when($nivel === 'critico', fn ($c) => $c->where('cantidad', '<', self::STOCK_MINIMO))
             ->when($nivel === 'atencion', fn ($c) => $c->where('cantidad', '<', self::STOCK_ATENCION))
@@ -128,8 +128,8 @@ class StockController extends Controller
     public function movimiento(Request $request)
     {
         $datos = $request->validate([
-            'centro' => ['required', 'string', 'in:' . implode(',', self::DEPOSITOS)],
-            'tipo' => ['required', 'string', 'in:' . implode(',', self::TIPOS_MOVIMIENTO)],
+            'centro' => ['required', 'string', 'in:'.implode(',', self::DEPOSITOS)],
+            'tipo' => ['required', 'string', 'in:'.implode(',', self::TIPOS_MOVIMIENTO)],
             'material' => ['required', 'string', 'max:255'],
             'cantidad' => ['required', 'integer', 'min:1', 'max:1000'],
             'obs' => ['nullable', 'string', 'max:500'],
