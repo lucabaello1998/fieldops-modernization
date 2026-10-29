@@ -1,5 +1,11 @@
 # FieldOps — modernización de un sistema legacy
 
+[![CI](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml/badge.svg)](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml)
+[![PHP](https://img.shields.io/badge/PHP-8.3-777bb4)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-12-ff2d20)](https://laravel.com/)
+[![Tests](https://img.shields.io/badge/tests-53%20%C2%B7%20272%20assertions-16a34a)](tests)
+[![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
+
 Caso de estudio completo: un sistema de gestión de operaciones de campo (instalaciones de fibra
 óptica, stock por depósito, técnicos, tareas/Kanban, reclamos e integración con SAP) escrito en
 **PHP 7.4 + jQuery + MySQL**, sin framework, reescrito sobre **Laravel 12 + PHP 8.3 + MySQL 8**.

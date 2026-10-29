@@ -1,0 +1,148 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  calidad:
+    name: Pint + PHPUnit + build
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: fieldops_test
+          MYSQL_USER: fieldops
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -ufieldops -psecret"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # El phpunit.xml fija DB_HOST=db (igual que docker compose).
+      # En el runner los servicios se publican en localhost, asi que se agrega el alias.
+      - name: Alias db -> localhost
+        run: echo "127.0.0.1 db" | sudo tee -a /etc/hosts
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_mysql, bcmath, gd, zip, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependencias PHP
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Entorno
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Build de assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Estilo (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Tests
+        run: php artisan test --colors=always
+
+  e2e:
+    name: E2E contra la app real
+    runs-on: ubuntu-latest
+    needs: calidad
+
+    services:
+      db:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: fieldops
+          MYSQL_USER: fieldops
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -ufieldops -psecret"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Alias db -> localhost
+        run: echo "127.0.0.1 db" | sudo tee -a /etc/hosts
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_mysql, bcmath, gd, zip, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependencias
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci
+
+      - name: Entorno y datos de demo
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+          npm run build
+          php artisan migrate:fresh --seed --force --ansi
+
+      - name: Levantar la app
+        run: |
+          php artisan serve --host=127.0.0.1 --port=8080 > /tmp/serve.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf -o /dev/null http://127.0.0.1:8080/login; then
+              echo "app arriba"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "la app no arranco"; cat /tmp/serve.log; exit 1
+
+      - name: Verificacion funcional (Kanban, stock, usuarios)
+        env:
+          BASE: http://127.0.0.1:8080
+          CHROME_PATH: /usr/bin/google-chrome
+        run: node tools/verificar.mjs
+
+      - name: Log del servidor si algo falla
+        if: failure()
+        run: cat /tmp/serve.log
