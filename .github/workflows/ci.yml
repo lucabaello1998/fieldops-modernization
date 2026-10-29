@@ -47,6 +47,12 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      # El esquema legacy tiene tablas de ~150 columnas: igual que en docker compose,
+      # MySQL corre sin strict mode para poder crearlas.
+      - name: MySQL sin strict mode
+        run: |
+          php -r '$pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root"); $pdo->exec("SET GLOBAL innodb_strict_mode = OFF"); echo "innodb_strict_mode=OFF\n";'
+
       - name: Node
         uses: actions/setup-node@v4
         with:
@@ -106,6 +112,10 @@ jobs:
           extensions: mbstring, pdo_mysql, bcmath, gd, zip, intl
           coverage: none
           tools: composer:v2
+
+      - name: MySQL sin strict mode
+        run: |
+          php -r '$pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root"); $pdo->exec("SET GLOBAL innodb_strict_mode = OFF"); echo "innodb_strict_mode=OFF\n";'
 
       - name: Node
         uses: actions/setup-node@v4
