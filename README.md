@@ -63,6 +63,25 @@ node tools/capturar-todo.mjs                # capturas: cada pantalla en claro y
 - **Pasada visual** (`tools/capturar-todo.mjs`): todas las pantallas, modales, 403 y 404, en los dos
   temas, para revisar la interfaz una por una.
 
+## Integración continua
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) corre en cada push y PR, con MySQL 8 como
+servicio y el mismo `innodb_strict_mode=OFF` que usa el compose (el esquema legacy tiene tablas de
+~150 columnas que no entran con el modo estricto):
+
+| Job | Qué hace |
+|---|---|
+| **Pint + PHPUnit + build** | `composer install`, `npm run build`, `vendor/bin/pint --test` y `php artisan test` (53 tests / 272 assertions) |
+| **E2E contra la app real** | `migrate:fresh --seed`, `php artisan serve` y los 10 checks de `tools/verificar.mjs` con Chrome headless |
+
+El badge de arriba es el estado real de ese workflow.
+
+## Deploy
+
+La imagen de producción (`docker/php/Dockerfile.prod`) compila los assets, instala `vendor` sin dev,
+cachea config/rutas/vistas y migra al arrancar. El paso a paso para Railway (con MySQL incluido) y
+Fly.io está en [`docs/deploy.md`](docs/deploy.md).
+
 ## Qué trae la v2
 
 | Módulo | Estado | Detalle |

@@ -1,0 +1,37 @@
+# Fly.io: la imagen de produccion ya migra y siembra sola al arrancar.
+# Necesita un MySQL externo (Aiven, PlanetScale, TiDB Cloud) en los secretos DB_*.
+app = "fieldops-demo"
+primary_region = "gru"
+
+[build]
+  dockerfile = "docker/php/Dockerfile.prod"
+
+[env]
+  APP_ENV = "production"
+  APP_DEBUG = "false"
+  LOG_CHANNEL = "stderr"
+  LOG_LEVEL = "warning"
+  SESSION_DRIVER = "database"
+  CACHE_STORE = "database"
+  QUEUE_CONNECTION = "sync"
+  RUN_MIGRATIONS = "1"
+  RUN_SEED = "1"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "60s"
+    method = "GET"
+    path = "/login"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
