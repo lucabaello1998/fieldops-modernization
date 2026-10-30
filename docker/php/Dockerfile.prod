@@ -31,6 +31,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     && printf '<Directory /var/www/html/public>\n    Options -Indexes +FollowSymLinks\n    AllowOverride All\n    Require all granted\n</Directory>\n' \
          > /etc/apache2/conf-available/fieldops.conf \
     && a2enconf fieldops \
+    && printf 'ServerName localhost\n' > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername \
     && printf 'memory_limit=512M\nupload_max_filesize=64M\npost_max_size=64M\nmax_execution_time=120\ndate.timezone=America/Argentina/Buenos_Aires\nopcache.enable=1\nopcache.validate_timestamps=0\n' \
          > /usr/local/etc/php/conf.d/fieldops.ini
 
