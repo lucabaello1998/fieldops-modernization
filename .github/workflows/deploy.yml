@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # El secreto no se puede evaluar en el `if` del job, así que se chequea acá.
       - name: ¿Hay token configurado?

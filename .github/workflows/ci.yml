@@ -32,7 +32,7 @@ jobs:
           --health-retries=20
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # El phpunit.xml fija DB_HOST=db (igual que docker compose).
       # En el runner los servicios se publican en localhost, asi que se agrega el alias.
@@ -100,7 +100,7 @@ jobs:
           --health-retries=20
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Alias db -> localhost
         run: echo "127.0.0.1 db" | sudo tee -a /etc/hosts
