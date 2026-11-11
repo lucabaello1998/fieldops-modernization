@@ -54,7 +54,7 @@ jobs:
           php -r '$pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root"); $pdo->exec("SET GLOBAL innodb_strict_mode = OFF"); echo "innodb_strict_mode=OFF\n";'
 
       - name: Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
@@ -118,7 +118,7 @@ jobs:
           php -r '$pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root"); $pdo->exec("SET GLOBAL innodb_strict_mode = OFF"); echo "innodb_strict_mode=OFF\n";'
 
       - name: Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
