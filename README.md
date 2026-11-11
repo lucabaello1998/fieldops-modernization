@@ -5,6 +5,7 @@
 [![Laravel](https://img.shields.io/badge/Laravel-12-ff2d20)](https://laravel.com/)
 [![Tests](https://img.shields.io/badge/tests-62%20%C2%B7%20305%20assertions-16a34a)](tests)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/lucabaello1998/fieldops-modernization?label=release)](https://github.com/lucabaello1998/fieldops-modernization/releases/latest)
 
 Caso de estudio completo: un sistema de gestión de operaciones de campo (instalaciones de fibra
 óptica, stock por depósito, técnicos, tareas/Kanban, reclamos e integración con SAP) escrito en
