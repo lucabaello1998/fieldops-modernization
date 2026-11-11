@@ -67,14 +67,18 @@ class StockTest extends TestCase
         $this->assertSame(70, (int) $linea->fresh()->cantidad);
     }
 
-    public function test_un_egreso_mayor_al_stock_deja_cero_y_nunca_negativo(): void
+    public function test_un_egreso_mayor_al_stock_es_un_error_y_no_deja_negativo(): void
     {
         $linea = $this->material(cantidad: 5);
 
         $this->actingAs($this->admin())
-            ->post('/stock/movimiento', $this->movimiento(['tipo' => 'Devolucion', 'cantidad' => 50]));
+            ->post('/stock/movimiento', $this->movimiento(['tipo' => 'Devolucion', 'cantidad' => 50]))
+            ->assertSessionHasErrors('cantidad');
 
-        $this->assertSame(0, (int) $linea->fresh()->cantidad);
+        // Antes se recortaba a cero en silencio; ahora el movimiento no se registra
+        // y el stock queda como estaba (una diferencia de inventario se ve).
+        $this->assertSame(5, (int) $linea->fresh()->cantidad);
+        $this->assertSame(0, MovimientoInterno::count());
     }
 
     public function test_el_alta_crea_la_linea_si_el_material_no_existe_en_ese_deposito(): void
@@ -92,17 +96,18 @@ class StockTest extends TestCase
         $this->assertSame(25, (int) $linea->cantidad);
     }
 
-    public function test_un_egreso_de_un_material_inexistente_no_crea_la_linea(): void
+    public function test_un_egreso_de_un_material_inexistente_no_crea_la_linea_y_avisa(): void
     {
         $this->actingAs($this->admin())
             ->post('/stock/movimiento', $this->movimiento([
                 'material' => 'No existe',
                 'tipo' => 'Baja de material',
-            ]));
+            ]))
+            ->assertSessionHasErrors('material');
 
         $this->assertNull(Material::where('material', 'No existe')->first());
-        // El movimiento igual queda registrado en la bitacora.
-        $this->assertSame(1, MovimientoInterno::count());
+        // No se registra un movimiento que no movió nada.
+        $this->assertSame(0, MovimientoInterno::count());
     }
 
     public function test_el_movimiento_guarda_quien_lo_hizo_y_el_deposito(): void
@@ -138,6 +143,88 @@ class StockTest extends TestCase
             ->assertSessionHasErrors('centro');
 
         $this->assertSame(0, MovimientoInterno::count());
+    }
+
+    public function test_una_transferencia_mueve_las_unidades_sin_inflar_el_total(): void
+    {
+        $this->material('ONT Huawei', 'Central', 100);
+        $this->material('ONT Huawei', 'Norte', 20);
+
+        $this->actingAs($this->admin())
+            ->post('/stock/movimiento', $this->movimiento([
+                'tipo' => 'Transferencia',
+                'centro_destino' => 'Norte',
+                'cantidad' => 30,
+            ]))
+            ->assertRedirect()
+            ->assertSessionHas('ok');
+
+        $origen = Material::where('centro', 'Central')->firstOrFail();
+        $destino = Material::where('centro', 'Norte')->firstOrFail();
+
+        $this->assertSame(70, (int) $origen->cantidad);
+        $this->assertSame(50, (int) $destino->cantidad);
+        $this->assertSame(120, (int) Material::sum('cantidad'));
+    }
+
+    public function test_una_transferencia_a_un_deposito_sin_la_linea_la_crea(): void
+    {
+        $this->material('ONT Huawei', 'Central', 10);
+
+        $this->actingAs($this->admin())
+            ->post('/stock/movimiento', $this->movimiento([
+                'tipo' => 'Transferencia',
+                'centro_destino' => 'Sur',
+                'cantidad' => 4,
+            ]))
+            ->assertSessionHas('ok');
+
+        $this->assertSame(6, (int) Material::where('centro', 'Central')->value('cantidad'));
+        $this->assertSame(4, (int) Material::where('centro', 'Sur')->value('cantidad'));
+    }
+
+    public function test_una_transferencia_sin_destino_es_invalida(): void
+    {
+        $this->material('ONT Huawei', 'Central', 10);
+
+        $this->actingAs($this->admin())
+            ->post('/stock/movimiento', $this->movimiento([
+                'tipo' => 'Transferencia',
+                'cantidad' => 4,
+            ]))
+            ->assertSessionHasErrors('centro_destino');
+
+        $this->assertSame(10, (int) Material::where('centro', 'Central')->value('cantidad'));
+        $this->assertSame(0, MovimientoInterno::count());
+    }
+
+    public function test_una_transferencia_al_mismo_deposito_es_invalida(): void
+    {
+        $this->material('ONT Huawei', 'Central', 10);
+
+        $this->actingAs($this->admin())
+            ->post('/stock/movimiento', $this->movimiento([
+                'tipo' => 'Transferencia',
+                'centro_destino' => 'Central',
+                'cantidad' => 4,
+            ]))
+            ->assertSessionHasErrors('centro_destino');
+    }
+
+    public function test_no_se_puede_transferir_mas_de_lo_que_hay(): void
+    {
+        $this->material('ONT Huawei', 'Central', 3);
+
+        $this->actingAs($this->admin())
+            ->post('/stock/movimiento', $this->movimiento([
+                'tipo' => 'Transferencia',
+                'centro_destino' => 'Norte',
+                'cantidad' => 5,
+            ]))
+            ->assertSessionHasErrors('cantidad');
+
+        $this->assertSame(3, (int) Material::where('centro', 'Central')->value('cantidad'));
+        $this->assertSame(0, Material::where('centro', 'Norte')->count());
     }
 
     public function test_el_listado_filtra_por_deposito_y_nivel_critico(): void

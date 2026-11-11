@@ -181,6 +181,17 @@
                     </div>
 
                     <div>
+                        <label for="centro-destino-mov" class="label">Depósito destino</label>
+                        <select id="centro-destino-mov" name="centro_destino" class="select">
+                            <option value="">— Solo para transferencias —</option>
+                            @foreach ($depositos as $deposito)
+                                <option value="{{ $deposito }}" @selected(old('centro_destino') === $deposito)>{{ $deposito }}</option>
+                            @endforeach
+                        </select>
+                        @error('centro_destino') <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <label for="material-mov" class="label">Material</label>
                         <input id="material-mov" name="material" type="text" list="lista-materiales"
                                value="{{ old('material') }}" required maxlength="255"

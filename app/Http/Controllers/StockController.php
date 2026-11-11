@@ -7,6 +7,7 @@ use App\Models\Material;
 use App\Models\MovimientoInterno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Modulo de Stock: consulta de materiales por deposito y registro de
@@ -124,21 +125,54 @@ class StockController extends Controller
 
     /**
      * Registra un movimiento interno y ajusta el stock del deposito.
+     *
+     * Una transferencia mueve unidades de un deposito a otro: si solo se sumara
+     * al destino, el total del sistema creceria con cada movimiento.
      */
     public function movimiento(Request $request)
     {
         $datos = $request->validate([
             'centro' => ['required', 'string', 'in:'.implode(',', self::DEPOSITOS)],
+            'centro_destino' => [
+                'nullable', 'string', 'in:'.implode(',', self::DEPOSITOS),
+                'required_if:tipo,Transferencia',
+                'different:centro',
+            ],
             'tipo' => ['required', 'string', 'in:'.implode(',', self::TIPOS_MOVIMIENTO)],
             'material' => ['required', 'string', 'max:255'],
             'cantidad' => ['required', 'integer', 'min:1', 'max:1000'],
             'obs' => ['nullable', 'string', 'max:500'],
+        ], [
+            'centro_destino.required_if' => 'Para transferir hay que elegir el depósito de destino.',
+            'centro_destino.different' => 'El depósito de destino tiene que ser distinto del de origen.',
         ]);
 
         $cantidad = (int) $datos['cantidad'];
         $esEgreso = in_array($datos['tipo'], self::TIPOS_EGRESO, true);
+        $esTransferencia = $datos['tipo'] === 'Transferencia';
 
-        DB::transaction(function () use ($datos, $cantidad, $esEgreso) {
+        DB::transaction(function () use ($datos, $cantidad, $esEgreso, $esTransferencia) {
+            $origen = Material::query()
+                ->where('centro', $datos['centro'])
+                ->where('material', $datos['material'])
+                ->lockForUpdate()
+                ->first();
+
+            // Baja, devolucion y transferencia sacan unidades de una linea que
+            // tiene que existir: sin esto, el movimiento quedaba "registrado" sin
+            // haber tocado nada.
+            if (($esEgreso || $esTransferencia) && ! $origen) {
+                throw ValidationException::withMessages([
+                    'material' => 'Ese material no existe en '.$datos['centro'].': primero hay que darlo de alta.',
+                ]);
+            }
+
+            if (($esEgreso || $esTransferencia) && (int) $origen->cantidad < $cantidad) {
+                throw ValidationException::withMessages([
+                    'cantidad' => 'En '.$datos['centro'].' hay '.(int) $origen->cantidad.' unidades de ese material.',
+                ]);
+            }
+
             // ------------------------------------- bitacora del movimiento
             MovimientoInterno::create([
                 'token' => bin2hex(random_bytes(6)),
@@ -149,37 +183,65 @@ class StockController extends Controller
                 'inicio' => now()->toDateString(),
                 'dia' => now()->locale('es')->isoFormat('dddd'),
                 'tipo' => 'Interno',
-                'zona' => $datos['centro'],
+                'zona' => $esTransferencia
+                    ? $datos['centro'].' -> '.$datos['centro_destino']
+                    : $datos['centro'],
                 'obs' => $datos['obs'] ?? '',
                 'latitud' => '',
                 'longitud' => '',
             ]);
 
             // ------------------------------------ ajuste del stock real
-            $linea = Material::query()
-                ->where('centro', $datos['centro'])
-                ->where('material', $datos['material'])
-                ->first();
+            if ($esEgreso) {
+                $origen->cantidad = max(0, (int) $origen->cantidad - $cantidad);
+                $origen->save();
 
-            if ($linea) {
-                $linea->cantidad = $esEgreso
-                    ? max(0, (int) $linea->cantidad - $cantidad)
-                    : (int) $linea->cantidad + $cantidad;
-                $linea->save();
-            } elseif ($datos['tipo'] === 'Alta de material') {
-                // Solo el alta genera una linea nueva cuando no existe.
-                Material::create([
-                    'material' => $datos['material'],
-                    'centro' => $datos['centro'],
-                    'cantidad' => $cantidad,
-                    'fecha' => now()->toDateString(),
-                    'fechaegre' => now()->toDateString(),
-                    'tecnico' => '',
-                    'cantec' => 0,
-                ]);
+                return;
+            }
+
+            if ($esTransferencia) {
+                $origen->cantidad = (int) $origen->cantidad - $cantidad;
+                $origen->save();
+
+                $destino = Material::query()
+                    ->where('centro', $datos['centro_destino'])
+                    ->where('material', $datos['material'])
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($destino) {
+                    $destino->cantidad = (int) $destino->cantidad + $cantidad;
+                    $destino->save();
+                } else {
+                    $this->crear_linea($datos['centro_destino'], $datos['material'], $cantidad);
+                }
+
+                return;
+            }
+
+            // Alta y ajuste: suman al deposito (y crean la linea si no existe).
+            if ($origen) {
+                $origen->cantidad = (int) $origen->cantidad + $cantidad;
+                $origen->save();
+            } else {
+                $this->crear_linea($datos['centro'], $datos['material'], $cantidad);
             }
         });
 
         return back()->with('ok', 'Movimiento registrado correctamente.');
+    }
+
+    /** Crea la línea de stock de un material en un depósito. */
+    private function crear_linea(string $centro, string $material, int $cantidad): void
+    {
+        Material::create([
+            'material' => $material,
+            'centro' => $centro,
+            'cantidad' => $cantidad,
+            'fecha' => now()->toDateString(),
+            'fechaegre' => now()->toDateString(),
+            'tecnico' => '',
+            'cantec' => 0,
+        ]);
     }
 }

@@ -96,6 +96,21 @@ class UsuarioController extends Controller
             unset($datos['password']);
         }
 
+        // No se puede dejar el sistema sin administradores activos: el guard de
+        // destroy no alcanzaba, porque alcanzaba con cambiarle el rol al ultimo.
+        $dejaDeSerAdmin = $usuario->role === 'Administrador'
+            && $usuario->activo
+            && ($datos['role'] !== 'Administrador' || ! $datos['activo']);
+
+        if ($dejaDeSerAdmin) {
+            $otrosAdmins = User::where('role', 'Administrador')
+                ->where('activo', true)
+                ->whereKeyNot($usuario->id)
+                ->count();
+
+            abort_if($otrosAdmins === 0, 403, 'No podes dejar el sistema sin administradores activos.');
+        }
+
         $usuario->update($datos);
 
         return redirect()->route('usuarios.index')->with('ok', 'Usuario actualizado correctamente.');

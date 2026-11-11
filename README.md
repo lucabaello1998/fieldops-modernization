@@ -3,7 +3,7 @@
 [![CI](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml/badge.svg)](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml)
 [![PHP](https://img.shields.io/badge/PHP-8.3-777bb4)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-12-ff2d20)](https://laravel.com/)
-[![Tests](https://img.shields.io/badge/tests-54%20%C2%B7%20275%20assertions-16a34a)](tests)
+[![Tests](https://img.shields.io/badge/tests-62%20%C2%B7%20305%20assertions-16a34a)](tests)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
 
 Caso de estudio completo: un sistema de gestión de operaciones de campo (instalaciones de fibra
@@ -53,7 +53,7 @@ node tools/capturar-todo.mjs                # capturas: cada pantalla en claro y
 
 - **Tests de feature** (`tests/Feature/`): acceso y throttle del login, 403 por rol, cada pantalla
   con datos y con la base vacía, Kanban (alta, movimiento, nota, borrado), stock (entradas, salidas,
-  stock que nunca queda negativo), usuarios (bcrypt, no borrarse a sí mismo, no quedarse sin
+  stock que no acepta egresos sin saldo y transferencias entre depósitos sin inflar el total), usuarios (bcrypt, no borrarse a sí mismo, no quedarse sin
   administrador) y la búsqueda global.
 - Corren sobre **MySQL real** (`fieldops_test`), no SQLite: las migraciones usan DDL propio del
   esquema legacy. `tests/TestCase.php` fija esa base antes de bootear la app, así la suite nunca
@@ -78,7 +78,7 @@ servicio y el mismo `innodb_strict_mode=OFF` que usa el compose (el esquema lega
 
 | Job | Qué hace |
 |---|---|
-| **Pint + PHPUnit + build** | `composer install`, `npm run build`, `vendor/bin/pint --test` y `php artisan test` (54 tests / 275 assertions) |
+| **Pint + PHPUnit + build** | `composer install`, `npm run build`, `vendor/bin/pint --test` y `php artisan test` (62 tests / 305 assertions) |
 | **E2E contra la app real** | `migrate:fresh --seed`, `php artisan serve` y los 10 checks de `tools/verificar.mjs` con Chrome headless |
 
 El badge de arriba es el estado real de ese workflow.

@@ -140,6 +140,56 @@ class UsuariosTest extends TestCase
         $this->actingAs($admin)->delete("/usuarios/{$admin->id}")->assertForbidden();
     }
 
+    public function test_no_puede_quitarle_el_rol_al_ultimo_administrador(): void
+    {
+        $admin = $this->admin();
+
+        // Borrarlo estaba bloqueado, pero cambiarle el rol lo dejaba igual de fuera.
+        $this->actingAs($admin)
+            ->patch("/usuarios/{$admin->id}", [
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'role' => 'Tecnico',
+                'activo' => '1',
+            ])
+            ->assertForbidden();
+
+        $this->assertSame('Administrador', $admin->fresh()->role);
+    }
+
+    public function test_no_puede_desactivar_al_ultimo_administrador(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)
+            ->patch("/usuarios/{$admin->id}", [
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'role' => 'Administrador',
+                // Sin el checkbox no llega "activo": queda inactivo.
+            ])
+            ->assertForbidden();
+
+        $this->assertTrue($admin->fresh()->activo);
+    }
+
+    public function test_si_hay_otro_administrador_activo_se_puede_cambiar_el_rol(): void
+    {
+        $admin = $this->admin();
+        User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->patch("/usuarios/{$admin->id}", [
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'role' => 'Supervisor',
+                'activo' => '1',
+            ])
+            ->assertRedirect(route('usuarios.index'));
+
+        $this->assertSame('Supervisor', $admin->fresh()->role);
+    }
+
     public function test_el_listado_filtra_por_rol_y_estado(): void
     {
         $admin = $this->admin();
