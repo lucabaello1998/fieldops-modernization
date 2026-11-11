@@ -20,6 +20,16 @@ negocio no cambie su forma de trabajar.
 - Entorno y decisiones de infraestructura: [`docs/entorno.md`](docs/entorno.md)
 - Demo y guion: [`DEMO.md`](DEMO.md)
 
+| Tablero | Kanban de tareas |
+|---|---|
+| ![Tablero](docs/capturas/deck/02-tablero.png) | ![Kanban](docs/capturas/deck/04-tareas-kanban.png) |
+
+| Stock por depósito | Alta de instalación |
+|---|---|
+| ![Stock](docs/capturas/deck/05-stock.png) | ![Altas](docs/capturas/deck/06-altas.png) |
+
+Capturas del demo con datos sintéticos: mismo esquema, mismos volúmenes, sin información de clientes.
+
 ## Correr la demo
 
 ```bash
