@@ -30,6 +30,8 @@ services:
       - "3307:3306"
     volumes:
       - dbdata:/var/lib/mysql
+      # Crea fieldops_test (la que usa PHPUnit) en el primer arranque del volumen.
+      - ./docker/mysql/00-test-db.sql:/docker-entrypoint-initdb.d/00-test-db.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
       interval: 5s

@@ -3,7 +3,7 @@
 [![CI](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml/badge.svg)](https://github.com/lucabaello1998/fieldops-modernization/actions/workflows/ci.yml)
 [![PHP](https://img.shields.io/badge/PHP-8.3-777bb4)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-12-ff2d20)](https://laravel.com/)
-[![Tests](https://img.shields.io/badge/tests-53%20%C2%B7%20272%20assertions-16a34a)](tests)
+[![Tests](https://img.shields.io/badge/tests-54%20%C2%B7%20275%20assertions-16a34a)](tests)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
 
 Caso de estudio completo: un sistema de gestión de operaciones de campo (instalaciones de fibra
@@ -58,6 +58,13 @@ node tools/capturar-todo.mjs                # capturas: cada pantalla en claro y
 - Corren sobre **MySQL real** (`fieldops_test`), no SQLite: las migraciones usan DDL propio del
   esquema legacy. `tests/TestCase.php` fija esa base antes de bootear la app, así la suite nunca
   toca los datos de la demo.
+- `fieldops_test` la crea MySQL al inicializar el volumen (`docker/mysql/00-test-db.sql`). Si ya
+  tenías el volumen de antes, creala una vez:
+
+  ```bash
+  docker compose exec db mysql -uroot -proot -e \
+    "CREATE DATABASE IF NOT EXISTS fieldops_test; GRANT ALL ON fieldops_test.* TO 'fieldops'@'%';"
+  ```
 - **Verificación e2e** (`tools/verificar.mjs`): login, arrastre en el Kanban, alta de tarea,
   movimiento de stock, búsqueda y alta/baja de usuario, validando DOM y HTTP.
 - **Pasada visual** (`tools/capturar-todo.mjs`): todas las pantallas, modales, 403 y 404, en los dos
@@ -71,7 +78,7 @@ servicio y el mismo `innodb_strict_mode=OFF` que usa el compose (el esquema lega
 
 | Job | Qué hace |
 |---|---|
-| **Pint + PHPUnit + build** | `composer install`, `npm run build`, `vendor/bin/pint --test` y `php artisan test` (53 tests / 272 assertions) |
+| **Pint + PHPUnit + build** | `composer install`, `npm run build`, `vendor/bin/pint --test` y `php artisan test` (54 tests / 275 assertions) |
 | **E2E contra la app real** | `migrate:fresh --seed`, `php artisan serve` y los 10 checks de `tools/verificar.mjs` con Chrome headless |
 
 El badge de arriba es el estado real de ese workflow.
@@ -79,8 +86,19 @@ El badge de arriba es el estado real de ese workflow.
 ## Deploy
 
 La imagen de producción (`docker/php/Dockerfile.prod`) compila los assets, instala `vendor` sin dev,
-cachea config/rutas/vistas y migra al arrancar. El paso a paso para Railway (con MySQL incluido) y
-Fly.io está en [`docs/deploy.md`](docs/deploy.md).
+cachea config/rutas/vistas y, al arrancar, **genera la clave si falta, migra y siembra**:
+
+| Variable | Default en la imagen | Qué hace |
+|---|---|---|
+| `RUN_MIGRATIONS` | `1` | `php artisan migrate --force` con 30 reintentos de 3 s (la base externa tarda en levantar) |
+| `RUN_SEED` | `0` | carga la demo sintética **una sola vez**: el seeder corta si `tareas` ya tiene filas |
+
+El sembrado es idempotente a propósito: Fly apaga las máquinas sin tráfico (`auto_stop_machines`) y
+las vuelve a arrancar, así que un `db:seed` no idempotente duplicaría la demo en cada arranque.
+Hay un test de regresión para eso (`tests/Feature/SembradoTest.php`).
+
+El paso a paso para Railway (con MySQL incluido) y Fly.io —secretos `DB_*`, `APP_KEY`, chequeo de
+salud en `/login`— está en [`docs/deploy.md`](docs/deploy.md).
 
 ## Qué trae la v2
 

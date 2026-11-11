@@ -25,7 +25,7 @@ levantarla contra MySQL devuelve `200` en `/login` con los assets compilados.
 | `CACHE_STORE` | `database` |
 | `QUEUE_CONNECTION` | `sync` |
 | `RUN_MIGRATIONS` | `1` (migra al arrancar) |
-| `RUN_SEED` | `1` la primera vez (datos sintéticos), después `0` |
+| `RUN_SEED` | `1` la primera vez (datos sintéticos); después se puede dejar en `1` porque el seeder corta si la base ya tiene datos |
 
 Generar la key sin instalar PHP:
 
@@ -99,4 +99,5 @@ Sin el secreto, el workflow se saltea el deploy (no falla).
 - [ ] El login con `admin@fieldops.test` / `password` entra al tablero.
 - [ ] El Kanban permite arrastrar una tarjeta y queda registrada en la bitácora.
 - [ ] `/usuarios` lista los usuarios sembrados.
-- [ ] Cambiar `RUN_SEED` a `0` para no volver a sembrar en cada arranque.
+- [ ] Si no querés cargar la demo en producción, dejar `RUN_SEED` en `0` (con `1` igual no duplica:
+      el seeder corta cuando `tareas` ya tiene filas).
